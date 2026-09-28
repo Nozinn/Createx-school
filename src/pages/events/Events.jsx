@@ -11,15 +11,14 @@ export default function Events() {
 	const [searchParams, setSearchParams] = useSearchParams()
 
 	const category = searchParams.get('category') || 'All'
-	const format = searchParams.get('format') || 'All'
 	const sort = searchParams.get('sort') || 'upcoming'
 	const search = searchParams.get('q') || ''
 	const perPage = Number(searchParams.get('perPage')) || 6
 	const page = Number(searchParams.get('page')) || 1
 
 	const filtered = useMemo(
-		() => filterAndSortEvents(events, { category, format, search, sort }),
-		[category, format, search, sort]
+		() => filterAndSortEvents(events, { category, search, sort }),
+		[category, search, sort]
 	)
 
 	const { items, totalPages, total } = paginate(filtered, page, perPage)
@@ -32,14 +31,11 @@ export default function Events() {
 			<section className='pt-16 pb-12 bg-gradient-to-b from-[#FFF2ED] to-[#FEDBD0]/30 border-b border-gray-100'>
 				<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
 					<span className='text-xs font-bold uppercase tracking-widest text-[#1E212C]'>
-						EVENTS
+						Our events
 					</span>
 					<h1 className='text-3xl sm:text-4xl lg:text-5xl font-black text-[#1E212C] font-heading mt-2'>
-						Lectures, workshops & meetups
+						Lectures, workshops & master-classes
 					</h1>
-					<p className='text-sm sm:text-base text-gray-600 max-w-2xl mx-auto mt-4 leading-relaxed'>
-						Free and paid live events hosted by Createx mentors — online and on campus. Filter by category, format or search to find the one for you.
-					</p>
 				</div>
 			</section>
 
