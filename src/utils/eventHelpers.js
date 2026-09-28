@@ -2,26 +2,25 @@
 // so both views (which read/write the same URL search params) stay in sync.
 
 export const SORT_OPTIONS = [
-	{ value: 'upcoming', label: 'Date: soonest first' },
-	{ value: 'latest', label: 'Date: latest first' },
-	{ value: 'price-asc', label: 'Price: low to high' },
-	{ value: 'price-desc', label: 'Price: high to low' }
+	{ value: 'upcoming', label: 'newest' },
+	{ value: 'latest', label: 'oldest' },
+	{ value: 'price-asc', label: 'price: low to high' },
+	{ value: 'price-desc', label: 'price: high to low' }
 ]
 
 export const PER_PAGE_OPTIONS = [6, 9, 12]
 
-export function filterAndSortEvents(events, { category, format, search, sort }) {
+export function filterAndSortEvents(events, { category, search, sort }) {
 	const query = (search || '').trim().toLowerCase()
 
 	const filtered = events.filter((ev) => {
 		const matchCategory = !category || category === 'All' || ev.category === category
-		const matchFormat = !format || format === 'All' || ev.format === format
 		const matchSearch =
 			!query ||
 			ev.title.toLowerCase().includes(query) ||
 			ev.category.toLowerCase().includes(query) ||
 			ev.speaker.name.toLowerCase().includes(query)
-		return matchCategory && matchFormat && matchSearch
+		return matchCategory && matchSearch
 	})
 
 	const sorted = [...filtered].sort((a, b) => {
@@ -55,4 +54,25 @@ export function paginate(items, page, perPage) {
 
 export function formatPrice(price) {
 	return price > 0 ? `$${price}` : 'Free'
+}
+
+// Figma's event cards spell the month out in full ("May", "August"), while the
+// card data stores the compact 3-letter form used elsewhere (home teaser, etc).
+const MONTH_FULL = {
+	JAN: 'January',
+	FEB: 'February',
+	MAR: 'March',
+	APR: 'April',
+	MAY: 'May',
+	JUN: 'June',
+	JUL: 'July',
+	AUG: 'August',
+	SEP: 'September',
+	OCT: 'October',
+	NOV: 'November',
+	DEC: 'December'
+}
+
+export function monthFull(month) {
+	return MONTH_FULL[month] || month
 }
